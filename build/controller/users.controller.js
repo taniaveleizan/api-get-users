@@ -16,7 +16,10 @@ exports.getUsers = void 0;
 const axios_1 = __importDefault(require("axios"));
 const fetchRandomUsers = (limit) => __awaiter(void 0, void 0, void 0, function* () {
     const response = yield axios_1.default.get(`https://randomuser.me/api/?results=${limit}`);
-    return response.data.results;
+    return response.data.results.map((user) => ({
+        name: `${user.name.first} ${user.name.last}`,
+        email: user.email
+    }));
 });
 let cachedUsers = [];
 const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

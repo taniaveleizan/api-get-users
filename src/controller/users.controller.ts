@@ -4,7 +4,10 @@ import axios from "axios";
 
 const fetchRandomUsers = async(limit : number)=>{
     const response = await axios.get(`https://randomuser.me/api/?results=${limit}`);
-    return response.data.results;
+    return response.data.results.map((user: any) =>({
+        name: `${user.name.first} ${user.name.last}`,
+        email: user.email
+    }));
 }
 
 let cachedUsers : any[] = [];
