@@ -8,8 +8,7 @@ const fetchRandomUsers = async(limit : number): Promise<any[]>=>{
         return response.data.results.map((user: any) =>({
             name: `${user.name.first} ${user.name.last}`,
             email: user.email,
-            gender: user.gender,
-            nacionalidad: user.nat
+            gender: user.gender
         }));
     } catch (error) {
         throw new Error('Error fetching users from randomuser.me API');
@@ -58,34 +57,4 @@ function filterUsers(users: any[], categorizeBy: string):any{
     });
 
     return filteredUsers;
-}
-
-//Funcion para obtener drink aleatorio
-const getRandomDrink = async function(): Promise<string>{
-    try {
-        const response = await axios.get('hhtps://www.thecocktaildb.com/api/json/v1/1/random.php');
-        const drinkName = response.data.drinks[0].strDrink;
-        return drinkName;
-    } catch (error) {
-        throw new Error('Error fetching random drink from thecocktaildb.com API');
-    }
-}
-
-//controller para users/drink
-export const getDrink = async (req: Request, res: Response) =>{
-    try {
-        const user = await fetchRandomUsers(1);
-        const cocktail = await getRandomDrink();
-
-        const userWithDrink = {
-            nombre: user[0].nombre,
-            email: user[0].email,
-            nacionalidad: user[0].nacionalidad,
-            'cocktail-favorito': cocktail
-        };
-
-        res.json({ user:[userWithDrink]});
-    } catch (error) {
-        res.status(500).json({error: error});
-    }
 }
